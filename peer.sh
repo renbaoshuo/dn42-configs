@@ -59,6 +59,7 @@ protocol bgp dn42_${PEER_ASN:0-4:4} from dnpeers {" > $BIRD_CONFIG_FILE
 
 if [[ $USE_LINK_LOCAL =~ ^[Yy](es)?$ ]]; then
     echo "    neighbor ${PEER_LINK_LOCAL} % 'dn42-${PEER_ASN:0-4:4}' as ${PEER_ASN};" >> $BIRD_CONFIG_FILE
+    echo "    source address ${OWN_LINK_LOCAL};" >> $BIRD_CONFIG_FILE
 else
     echo "    neighbor ${PEER_IPv6} as ${PEER_ASN};" >> $BIRD_CONFIG_FILE
 fi
