@@ -14,6 +14,7 @@ read -p 'Peer IPv6 Address: '               PEER_IPv6
 [[ $USE_LINK_LOCAL =~ ^[Yy](es)?$ ]] && read -p 'Peer Link-local Address: ' PEER_LINK_LOCAL
 read -p 'Peer WireGuard EndPoint: '         PEER_WIREGUARD_ENDPOINT
 read -p 'Peer WireGuard Public Key: '       PEER_WIREGUARD_PUBLIC_KEY
+read -p 'Peer WireGuard Preshared Key: '    PEER_WIREGUARD_PRESHARED_KEY
 
 OWN_LINK_LOCAL="fe80::247"
 
@@ -39,8 +40,13 @@ echo "PostUp     = ip addr add ${OWN_IP}/32 peer ${PEER_IP}/32 dev %i
 Table      = off
 
 [Peer]
-PublicKey  = ${PEER_WIREGUARD_PUBLIC_KEY}
-Endpoint   = ${PEER_WIREGUARD_ENDPOINT}
+PublicKey  = ${PEER_WIREGUARD_PUBLIC_KEY}" >> $WIREGUARD_CONFIG_FILE
+
+if [[ $PEER_WIREGUARD_PRESHARED_KEY != "" ]]; then 
+    echo "PresharedKey = ${PEER_WIREGUARD_PRESHARED_KEY}" >> $WIREGUARD_CONFIG_FILE
+fi
+
+echo "Endpoint   = ${PEER_WIREGUARD_ENDPOINT}
 AllowedIPs = 0.0.0.0/0, ::/0
 " >> $WIREGUARD_CONFIG_FILE
 
