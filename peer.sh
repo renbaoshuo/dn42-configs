@@ -47,6 +47,7 @@ if [[ $PEER_WIREGUARD_PRESHARED_KEY != "" ]]; then
 fi
 
 echo "Endpoint   = ${PEER_WIREGUARD_ENDPOINT}
+PersistentKeepalive = 25
 AllowedIPs = 0.0.0.0/0, ::/0
 " >> $WIREGUARD_CONFIG_FILE
 
