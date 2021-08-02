@@ -45,8 +45,10 @@ if [[ $PEER_WIREGUARD_PRESHARED_KEY != "" ]]; then
     echo "PresharedKey = ${PEER_WIREGUARD_PRESHARED_KEY}" >> $WIREGUARD_CONFIG_FILE
 fi
 
-echo "Endpoint   = ${PEER_WIREGUARD_ENDPOINT}
-PersistentKeepalive = 25
+if [[ $PEER_WIREGUARD_ENDPOINT != "" ]]; then
+    echo "Endpoint   = ${PEER_WIREGUARD_ENDPOINT}" >> $WIREGUARD_CONFIG_FILE
+fi
+echo "PersistentKeepalive = 25
 AllowedIPs = 0.0.0.0/0, ::/0
 " >> $WIREGUARD_CONFIG_FILE
 
