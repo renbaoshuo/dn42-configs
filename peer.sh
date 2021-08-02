@@ -32,8 +32,11 @@ if [[ $PEER_IPv6 != "" ]]; then
     echo "PostUp     = ip addr add ${OWN_IPv6}/128 peer ${PEER_IPv6}/128 dev %i" >> $WIREGUARD_CONFIG_FILE
 fi
 
-echo "PostUp     = ip addr add ${OWN_IP}/32 peer ${PEER_IP}/32 dev %i
-Table      = off
+if [[ $PEER_IP != "" ]]; then
+    echo "PostUp     = ip addr add ${OWN_IP}/32 peer ${PEER_IP}/32 dev %i" >> $WIREGUARD_CONFIG_FILE
+fi
+
+echo "Table      = off
 
 [Peer]
 PublicKey  = ${PEER_WIREGUARD_PUBLIC_KEY}" >> $WIREGUARD_CONFIG_FILE
