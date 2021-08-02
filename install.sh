@@ -9,6 +9,7 @@ wget -4 -O /tmp/ibgp.conf https://raw.githubusercontent.com/renbaoshuo/dn42-conf
 wget -4 -O /tmp/dn42_roa.conf https://dn42.burble.com/roa/dn42_roa_bird2_4.conf && mv -f /tmp/dn42_roa.conf /etc/bird/dn42_roa.conf
 wget -4 -O /tmp/dn42_roa_v6.conf https://dn42.burble.com/roa/dn42_roa_bird2_6.conf && mv -f /tmp/dn42_roa_v6.conf /etc/bird/dn42_roa_v6.conf
 wget -4 -O ~/peer.sh https://raw.githubusercontent.com/renbaoshuo/dn42-configs/master/peer.sh
+wget -4 -O ~/remove-peer.sh https://raw.githubusercontent.com/renbaoshuo/dn42-configs/master/remove-peer.sh
 
 echo '*** Setting bird configs...'
 ip address
@@ -29,7 +30,8 @@ echo '# Baoshuo DN42 Network
 0 * * * * root wget -4 -q -O /tmp/ibgp.conf https://raw.githubusercontent.com/renbaoshuo/dn42-configs/master/ibgp.conf && mv -f /tmp/ibgp.conf /etc/bird/ibgp.conf && birdc configure
 0 * * * * root wget -4 -q -O /tmp/dn42_roa.conf https://dn42.burble.com/roa/dn42_roa_bird2_4.conf && mv -f /tmp/dn42_roa.conf /etc/bird/dn42_roa.conf && birdc configure
 0 * * * * root wget -4 -q -O /tmp/dn42_roa_v6.conf https://dn42.burble.com/roa/dn42_roa_bird2_6.conf && mv -f /tmp/dn42_roa_v6.conf /etc/bird/dn42_roa_v6.conf && birdc configure
-0 * * * * root wget -4 -1 -O /tmp/peer.sh https://raw.githubusercontent.com/renbaoshuo/dn42-configs/master/peer.sh && mv -f /tmp/peer.sh /root/peer.sh
+0 * * * * root wget -4 -q -O /tmp/peer.sh https://raw.githubusercontent.com/renbaoshuo/dn42-configs/master/peer.sh && mv -f /tmp/peer.sh /root/peer.sh
+0 * * * * root wget -4 -q -O /tmp/remove-peer.sh https://raw.githubusercontent.com/renbaoshuo/dn42-configs/master/remove-peer.sh && mv /tmp/remove-peer.sh /root/remove-peer.sh
 ' >> /etc/crontab
 systemctl restart cron
 systemctl status cron
