@@ -25,15 +25,11 @@ echo '*** Writing WireGuard configs...'
 echo "# Peer dn42-${PEER_ASN:0-4:4}
 [Interface]
 PrivateKey = ${WIREGUARD_PRIVATE_KEY}
-ListenPort = 4${PEER_ASN:0-4:4}" > $WIREGUARD_CONFIG_FILE
-
-if [[ $USE_LINK_LOCAL =~ ^[Yy](es)?$ ]]; then
-    echo "PostUp     = ip addr add ${OWN_LINK_LOCAL}/128 peer ${PEER_LINK_LOCAL}/128 dev %i" >> $WIREGUARD_CONFIG_FILE
-fi
+ListenPort = 4${PEER_ASN:0-4:4}
+PostUp     = ip addr add ${OWN_LINK_LOCAL}/64 dev %i" >> $WIREGUARD_CONFIG_FILE
 
 if [[ $PEER_IPv6 != "" ]]; then
-    echo "PostUp     = ip addr add ${OWN_LINK_LOCAL}/64 dev %i
-PostUp     = ip addr add ${OWN_IPv6}/128 peer ${PEER_IPv6}/128 dev %i" >> $WIREGUARD_CONFIG_FILE
+    echo "PostUp     = ip addr add ${OWN_IPv6}/128 peer ${PEER_IPv6}/128 dev %i" >> $WIREGUARD_CONFIG_FILE
 fi
 
 echo "PostUp     = ip addr add ${OWN_IP}/32 peer ${PEER_IP}/32 dev %i
