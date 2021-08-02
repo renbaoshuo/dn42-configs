@@ -5,12 +5,12 @@ echo '*** Informations'
 ip a
 
 read -p 'Wireguard Private Key: '           WIREGUARD_PRIVATE_KEY
-read -p 'IPv4 Address: '                    OWN_IP
-read -p 'IPv6 Address: '                    OWN_IPv6
+read -p 'DN42 IPv4 Address: '               OWN_IP
+read -p 'DN42 IPv6 Address: '               OWN_IPv6
 read -p 'Peer ASN: '                        PEER_ASN
 read -p 'Use Link-local IP Address: [y/N] ' USE_LINK_LOCAL
-read -p 'Peer IPv4 Address: '               PEER_IP
-read -p 'Peer IPv6 Address: '               PEER_IPv6
+read -p 'Peer DN42 IPv4 Address: '          PEER_IP
+read -p 'Peer DN42 IPv6 Address: '          PEER_IPv6
 [[ $USE_LINK_LOCAL =~ ^[Yy](es)?$ ]] && read -p 'Peer Link-local Address: ' PEER_LINK_LOCAL
 read -p 'Peer WireGuard EndPoint: '         PEER_WIREGUARD_ENDPOINT
 read -p 'Peer WireGuard Public Key: '       PEER_WIREGUARD_PUBLIC_KEY
