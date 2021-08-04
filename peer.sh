@@ -13,6 +13,7 @@ read -p 'Peer DN42 IPv4 Address: '          PEER_IP
 read -p 'Peer DN42 IPv6 Address: '          PEER_IPv6
 [[ $USE_LINK_LOCAL =~ ^[Yy](es)?$ ]] && read -p 'Peer Link-local Address: ' PEER_LINK_LOCAL
 read -p 'Peer WireGuard EndPoint: '         PEER_WIREGUARD_ENDPOINT
+read -p 'Peer Dynamic IP: [y/N] '           PEER_DYNAMIC_IP
 read -p 'Peer WireGuard Public Key: '       PEER_WIREGUARD_PUBLIC_KEY
 read -p 'Peer WireGuard Preshared Key: '    PEER_WIREGUARD_PRESHARED_KEY
 
@@ -41,19 +42,24 @@ echo "Table      = off
 [Peer]
 PublicKey  = ${PEER_WIREGUARD_PUBLIC_KEY}" >> $WIREGUARD_CONFIG_FILE
 
-if [[ $PEER_WIREGUARD_PRESHARED_KEY != "" ]]; then 
+if [[ $PEER_WIREGUARD_PRESHARED_KEY != "" ]]; then
     echo "PresharedKey = ${PEER_WIREGUARD_PRESHARED_KEY}" >> $WIREGUARD_CONFIG_FILE
 fi
 
 if [[ $PEER_WIREGUARD_ENDPOINT != "" ]]; then
     echo "Endpoint   = ${PEER_WIREGUARD_ENDPOINT}" >> $WIREGUARD_CONFIG_FILE
 fi
+
 echo "PersistentKeepalive = 25
 AllowedIPs = 0.0.0.0/0, ::/0
 " >> $WIREGUARD_CONFIG_FILE
 
 systemctl enable --now wg-quick@dn42-${PEER_ASN:0-4:4}
 systemctl status wg-quick@dn42-${PEER_ASN:0-4:4}
+
+if [[ $PEER_DYNAMIC_IP =~ ^[Yy](es)?$ ]]; then
+    echo "* * * * * root wg set dn42-${PEER_ASN:0-4:4} peer ${PEER_WIREGUARD_PUBLIC_KEY} endpoint ${PEER_WIREGUARD_ENDPOINT}" >> /etc/crontab
+fi
 
 echo '*** Sleep for 10 seconds.'
 sleep 10
