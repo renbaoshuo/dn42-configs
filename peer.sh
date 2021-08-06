@@ -55,7 +55,7 @@ AllowedIPs = 0.0.0.0/0, ::/0
 " >> $WIREGUARD_CONFIG_FILE
 
 systemctl enable --now wg-quick@dn42-${PEER_ASN:0-4:4}
-systemctl status wg-quick@dn42-${PEER_ASN:0-4:4}
+echo -e "$(SYSTEMD_COLORS=1 systemctl status wg-quick@dn42-${PEER_ASN:0-4:4})"
 
 if [[ $PEER_DYNAMIC_IP =~ ^[Yy](es)?$ ]]; then
     echo "* * * * * root wg set dn42-${PEER_ASN:0-4:4} peer ${PEER_WIREGUARD_PUBLIC_KEY} endpoint ${PEER_WIREGUARD_ENDPOINT}" >> /etc/crontab
