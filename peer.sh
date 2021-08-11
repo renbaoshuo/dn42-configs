@@ -8,10 +8,10 @@ read -p 'Wireguard Private Key: '           WIREGUARD_PRIVATE_KEY
 read -p 'DN42 IPv4 Address: '               OWN_IP
 read -p 'DN42 IPv6 Address: '               OWN_IPv6
 read -p 'Peer ASN: '                        PEER_ASN
-read -p 'Use Link-local IP Address: [y/N] ' USE_LINK_LOCAL
+read -p 'Use Link-local IP Address: [Y/n] ' USE_LINK_LOCAL
 read -p 'Peer DN42 IPv4 Address: '          PEER_IP
 read -p 'Peer DN42 IPv6 Address: '          PEER_IPv6
-[[ $USE_LINK_LOCAL =~ ^[Yy](es)?$ ]] && read -p 'Peer Link-local Address: ' PEER_LINK_LOCAL
+[[ $USE_LINK_LOCAL =~ ^[Nn](o)?$ ]] || read -p 'Peer Link-local Address: ' PEER_LINK_LOCAL
 read -p 'Peer WireGuard EndPoint: '         PEER_WIREGUARD_ENDPOINT
 read -p 'Peer Dynamic IP: [y/N] '           PEER_DYNAMIC_IP
 read -p 'Peer WireGuard Public Key: '       PEER_WIREGUARD_PUBLIC_KEY
@@ -71,11 +71,11 @@ echo '*** Writing BIRD configs...'
 echo "# Peer dn42-${PEER_ASN:0-4:4}
 protocol bgp dn42_${PEER_ASN:0-4:4} from dnpeers {" > $BIRD_CONFIG_FILE
 
-if [[ $USE_LINK_LOCAL =~ ^[Yy](es)?$ ]]; then
+if [[ $USE_LINK_LOCAL =~ ^[Nn](o)?$ ]]; then
+    echo "    neighbor ${PEER_IPv6} as ${PEER_ASN};" >> $BIRD_CONFIG_FILE
+else
     echo "    neighbor ${PEER_LINK_LOCAL} % 'dn42-${PEER_ASN:0-4:4}' as ${PEER_ASN};" >> $BIRD_CONFIG_FILE
     echo "    source address ${OWN_LINK_LOCAL};" >> $BIRD_CONFIG_FILE
-else
-    echo "    neighbor ${PEER_IPv6} as ${PEER_ASN};" >> $BIRD_CONFIG_FILE
 fi
 
 echo "}" >> $BIRD_CONFIG_FILE
